@@ -1,59 +1,32 @@
-import { useEffect, useState } from "react";
+import React, { useState } from 'react'
 
-const API = "http://localhost:3000/todos";
-
-function App() {
-  const [todos, setTodos] = useState([]);
-  const [title, setTitle] = useState("");
-
-  // Fetch todos from backend
-  const fetchTodos = async () => {
-    const res = await fetch(API);
-    const data = await res.json();
-    setTodos(data);
-  };
-
-  useEffect(() => {
-    fetchTodos();
-  }, []);
-
-  // Add new todo
-  const addTodo = async () => {
-    if (!title.trim()) return;
-
-    await fetch(API, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ title }),
-    });
-
-    setTitle("");
-    fetchTodos(); // refresh list
-  };
+const App = () => {
+  const [title, setTitle] = useState('')
 
   return (
-    <div style={{ maxWidth: 400, margin: "50px auto", fontFamily: "sans-serif" }}>
-      <h2>Todo App</h2>
+    <div className="min-h-screen flex items-center justify-center">
+      <main className="w-[400px] h-[300px] bg-gray-200 rounded-xl p-5">
+        
+        <h1 className="text-xl font-semibold mb-4">Todo App</h1>
 
-      <div style={{ display: "flex", gap: 8 }}>
-        <input
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="Enter todo..."
-          style={{ flex: 1, padding: 8 }}
-        />
-        <button onClick={addTodo}>Add</button>
-      </div>
+        <div className="flex gap-2">
+         <input
+  type="text"
+  placeholder="Enter todo..."
+  value={title}
+  onChange={(e) => setTitle(e.target.value)}
+  className="flex-1 px-3 py-2 rounded-md outline-none border border-white bg-transparent"
+/>
 
-      <ul style={{ marginTop: 20 }}>
-        {todos.map((todo) => (
-          <li key={todo.id}>{todo.title}</li>
-        ))}
-      </ul>
+          <button className="cursor-pointer px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800 transition">
+  Add
+</button>
+
+        </div>
+
+      </main>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
