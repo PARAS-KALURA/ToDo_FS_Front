@@ -5,6 +5,8 @@ const API = 'http://localhost:3000/todos'
 const App = () => {
   const [title, setTitle] = useState('')
   const [todos, setTodos] = useState([])
+  const [editingId, setEditingId] = useState(null)
+  const [editTitle, setEditTitle] = useState('')
 
   const fetchTodos = async () => {
     const res = await fetch(API)
@@ -39,6 +41,20 @@ const App = () => {
     fetchTodos()
   }
 
+  const updateTodo = async (id) => {
+    if (!editTitle.trim()) return
+
+    await fetch(`${API}/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title: editTitle }),
+    })
+
+    setEditingId(null)
+    setEditTitle('')
+    fetchTodos()
+  }
+
   const deleteTodo = async (id) => {
     await fetch(`${API}/${id}`, {
       method: 'DELETE',
@@ -48,9 +64,9 @@ const App = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center bg-gray-800">
       <main className="w-[400px] h-[420px] bg-gray-200 rounded-xl p-5 flex flex-col">
-        <h1 className="text-xl font-semibold mb-4">Todo App</h1>
+        <h1 className="text-xl font-semibold mb-4">PERN Todo App</h1>
 
         <div className="flex gap-2 mb-4">
           <input
@@ -58,7 +74,7 @@ const App = () => {
             placeholder="Enter todo..."
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="flex-1 px-3 py-2 rounded-md outline-none border border-white bg-transparent"
+            className="flex-1 px-3 py-2 rounded-md outline-none border border-black bg-transparent"
           />
           <button
             onClick={addTodo}
@@ -72,28 +88,55 @@ const App = () => {
           {todos.map((todo) => (
             <div
               key={todo.id}
-              className="bg-white px-3 py-2 rounded-md flex items-center justify-between"
+              className="bg-white px-3 py-2 rounded-md flex items-center justify-between gap-2"
             >
-              <span
-                onClick={() => toggleTodo(todo.id, todo.completed)}
-                className={`cursor-pointer ${
-                  todo.completed ? 'line-through text-gray-400' : ''
-                }`}
-              >
-                {todo.title}
-              </span>
+              {editingId === todo.id ? (
+                <>
+                  <input
+                    value={editTitle}
+                    onChange={(e) => setEditTitle(e.target.value)}
+                    className="flex-1 px-2 py-1 border rounded"
+                  />
+                  <button
+                    onClick={() => updateTodo(todo.id)}
+                    className="text-green-600 text-sm"
+                  >
+                    Save
+                  </button>
+                </>
+              ) : (
+                <>
+                  <span
+                    onClick={() => toggleTodo(todo.id, todo.completed)}
+                    className={`cursor-pointer flex-1 ${
+                      todo.completed ? 'line-through text-gray-400' : ''
+                    }`}
+                  >
+                    {todo.title}
+                  </span>
 
-              <button
-                onClick={() => deleteTodo(todo.id)}
-                className="text-red-400 text-sm"
-              >
-                ✕
-              </button>
+                  <button
+                    onClick={() => {
+                      setEditingId(todo.id)
+                      setEditTitle(todo.title)
+                    }}
+                    className="text-blue-500 text-sm"
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    onClick={() => deleteTodo(todo.id)}
+                    className="text-red-400 text-sm"
+                  >
+                    ✕
+                  </button>
+                </>
+              )}
             </div>
           ))}
         </div>
       </main>
-      <div></div>
     </div>
   )
 }
