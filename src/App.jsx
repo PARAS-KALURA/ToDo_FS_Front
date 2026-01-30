@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
   const [text, setText] = useState("");
@@ -9,6 +9,25 @@ function App() {
     setTodos([...todos, text]);
     setText("");
   }
+
+  // Load todos when app starts
+  useEffect(() => {
+  const savedTodos = localStorage.getItem("todos");
+
+  if (savedTodos) {
+    try {
+      setTodos(JSON.parse(savedTodos));
+    } catch (error) {
+      console.error("Invalid JSON in localStorage");
+      localStorage.removeItem("todos");
+    }
+  }
+}, []);
+
+  // Save todos whenever they change
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
