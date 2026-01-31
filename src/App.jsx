@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const App = () => {
 
@@ -7,13 +7,31 @@ const App = () => {
   const [todos, setTodos] = useState([]);
   const [editTodo, setEditTodo] = useState(null);
   const [editedText, setEditedText] = useState("");
+  
+  const getTodos = async() => {
+    try {
+      const res = await axios.get("http://localhost:3000/todos");
+      setTodos(res.data); // Take only the todos sent by backend and store them in React state
+      console.log(res.data);
+      
+    } catch(err) {
+      console.error(err.message);
+    }
+  }
+
+  useEffect(() => {
+    getTodos();
+  }, [] );
+
 
   const onSubmitForm = async (e) => {
     e.preventDefault(); //“NO page refresh. Stay inside React.”
 
     try {
       await axios.post("http://localhost:3000/todos", {
-        description, completed: false});
+        description,
+        completed: false,
+      });
       setDescription("");
     } catch (err) {
       console.error(err.message);
@@ -34,6 +52,22 @@ const App = () => {
           <button className='bg-blue-500 hover:bg-blue-700 px-2 py-1 rounded text-white cursor-pointer' >Add Task</button>
 
         </form>
+        <div>
+  {todos.length === 0 ? (
+    <p className="text-gray-600">
+      No tasks available. Add a new task!
+    </p>
+  ) : (
+    <div>
+      {todos.map((todo) => (
+        <div key={todo.id}>
+          <span>{todo.title}</span>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
       </div>
     </div>
   )
