@@ -6,8 +6,18 @@ const App = () => {
   const [todos, setTodos] = useState([]);
   const [editTodo, setEditTodo] = useState(null);
   const [editedText, setEditedText] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  
+  const onSubmitForm = async(e) => {
+    e.preventDefault;
+    
+    try{
 
+    }  catch(err) {
+      console.error(err.message);
+      
+    }
+
+  }
 
   return (
     <div className='min-h-screen bg-gray-800 flex justify-center items-center ' >
