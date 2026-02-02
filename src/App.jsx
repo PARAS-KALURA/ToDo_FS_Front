@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 
 const App = () => {
@@ -7,6 +8,43 @@ const App = () => {
   const [editTodo, setEditTodo] = useState(null);
   const [editedText, setEditedText] = useState("");
   
+  const getTodos = async () => {
+    try {
+     const res = await axios.get("http://localhost:5000/todos");
+      setTodos(res.data);
+      console.log(res.data);
+      
+    } catch(err) {
+      console.error(err.message);
+    }
+  }
+
+
+  // useEffect is used to run getTodos() automatically when the page loads
+  useEffect(() => {
+   getTodos();
+  }, [] )
+
+  
+  const onSubmitForm = async (e) => {
+    e.preventDefault();
+    try {
+   const response = await axios.post("http://localhost:5000/todos", {
+    description,completed:false,
+   } )
+   setTodos([...todos, response.data]);
+   setDescription("");
+
+    console.log(response);
+   
+    }  catch(err) {
+        console.error(err.message);
+
+    }
+
+   
+
+  }
 
   return (
 
@@ -14,7 +52,9 @@ const App = () => {
    <div className='' >
      <h1 className='text-2xl font-bold text-center '>PERN TODO APP</h1>
       
-      <form className="bg-white p-6 rounded shadow-lg flex gap-2">
+      <form 
+      onSubmit={onSubmitForm}
+      className="bg-white p-6 rounded shadow-lg flex gap-2">
 
       <input
   type="text"
