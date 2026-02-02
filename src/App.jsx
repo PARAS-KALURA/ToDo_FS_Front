@@ -25,7 +25,7 @@ const App = () => {
    getTodos();
   }, [] )
 
-  
+
   const onSubmitForm = async (e) => {
     e.preventDefault();
     try {
@@ -72,6 +72,18 @@ const App = () => {
 </button>
 
       </form>
+
+     git <div>
+        {todos.length === 0 ? (<p className='text-gray-600' >No Task Available</p>) : (
+          <div>
+            {todos.map((todo) => {
+              <div>
+               return <span>{todos.description}</span>
+              </div>
+            } )}
+          </div>
+        ) }
+      </div>
 
    </div>
 </div>
