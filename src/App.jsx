@@ -49,8 +49,8 @@ const App = () => {
   return (
 
 <div className='min-h-screen flex items-center justify-center bg-gray-800 text-white'>
-   <div className='' >
-     <h1 className='text-2xl font-bold text-center '>PERN TODO APP</h1>
+   <div className='bg-white p-4 rounded-md' >
+     <h1 className='text-2xl font-bold text-gray-500 text-center '>PERN TODO APP</h1>
       
       <form 
       onSubmit={onSubmitForm}
@@ -63,7 +63,7 @@ const App = () => {
   onChange={(e) => setDescription(e.target.value)} required
   className="px-4 py-2 rounded text-black w-64 outline-none"
 />
-
+ 
 <button
   type="submit"
   className="bg-blue-500 px-4 py-2 rounded font-semibold hover:bg-blue-600 cursor-pointer "
@@ -73,17 +73,20 @@ const App = () => {
 
       </form>
 
-     git <div>
-        {todos.length === 0 ? (<p className='text-gray-600' >No Task Available</p>) : (
-          <div>
-            {todos.map((todo) => {
-              <div>
-                <span>{todos.description}</span>
-              </div>
-            } )}
-          </div>
-        ) }
-      </div>
+     <div>
+  {todos.length === 0 ? (
+    <p className="text-gray-600">No Task Available</p>
+  ) : (
+    <div className='text-gray-600' >
+      {todos.map((todo) => (
+        <div key={todo.todo_id}>
+          <span>{todo.description}</span>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
 
    </div>
 </div>
