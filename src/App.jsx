@@ -34,6 +34,7 @@ const App = () => {
    } )
    setTodos([...todos, response.data]);
    setDescription("");
+   getTodos();
 
     console.log(response);
    
@@ -57,16 +58,16 @@ const App = () => {
       className="bg-white p-6 rounded shadow-lg flex gap-2">
 
       <input
+      className="px-4 py-2 rounded text-black w-64 outline-none "
   type="text"
   placeholder="What needs to be done?"
   value={description}
   onChange={(e) => setDescription(e.target.value)} required
-  className="px-4 py-2 rounded text-black w-64 outline-none"
 />
  
 <button
   type="submit"
-  className="bg-blue-500 px-4 py-2 rounded font-semibold hover:bg-blue-600 cursor-pointer "
+  className="bg-blue-500 px-4 py-2 rounded font-semibold hover:bg-blue-600 cursor-pointer"
 >
   Add
 </button>
@@ -77,7 +78,7 @@ const App = () => {
   {todos.length === 0 ? (
     <p className="text-gray-600">No Task Available</p>
   ) : (
-    <div className='text-gray-600' >
+    <div className='text-gray-800 mt-5' >
       {todos.map((todo) => (
         <div key={todo.todo_id}>
           <span>{todo.description}</span>
